@@ -2,12 +2,14 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
+const fs = require('fs')
+const marked = require('marked')
 
 morgan.token('post-data', (req) => req.method === 'POST' ? JSON.stringify(req.body) : '')
 
 app.use(express.json())
 app.use(
-  morgan(':method :url :status :response-time :post-data')
+  morgan(':method :url :status :response-time :post-data'),
 )
 app.use(cors())
 
@@ -64,27 +66,32 @@ app.post('/api/person', (request, response) => {
   const person = {...request.body}
   if (!person) {
     response.status(400).json({
-      error: 'no person data received.'
+      error: 'no person data received.',
     })
   } else if (!person.name) {
     response.status(400).json({
-      error: 'name cannot be empty.'
+      error: 'name cannot be empty.',
     })
   } else if (!person.number) {
     response.status(400).json({
-      error: 'number cannot be empty.'
+      error: 'number cannot be empty.',
     })
   } else if (persons.find(_ => _.name.toLowerCase() === person.name.trim().toLowerCase())) {
     response.status(400).json({
-      error: 'name must be unique.'
+      error: 'name must be unique.',
     })
   } else {
     const min = 1000
     const max = Number.MAX_SAFE_INTEGER
-    person.id = Math.floor(Math.random() * (max - min + 1) ) + min
+    person.id = Math.floor(Math.random() * (max - min + 1)) + min
     persons.push(person)
     response.json(person)
   }
+})
+app.get('/', function (req, res) {
+  var path = __dirname + '/README.MD'
+  var file = fs.readFileSync(path, 'utf8')
+  res.send(marked(file.toString()))
 })
 
 const PORT = process.env.PORT || 3001
