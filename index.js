@@ -2,9 +2,11 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 
+morgan.token('post-data', (req) => req.method === 'POST' ? JSON.stringify(req.body) : '')
+
 app.use(express.json())
 app.use(
-  morgan('tiny')
+  morgan(':method :url :status :response-time :post-data')
 )
 
 let persons = [
@@ -57,7 +59,7 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/person', (request, response) => {
-  const person = request.body
+  const person = {...request.body}
   if (!person) {
     response.status(400).json({
       error: 'no person data received.'
