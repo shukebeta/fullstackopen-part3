@@ -12,6 +12,7 @@ app.use(
   morgan(':method :url :status :response-time :post-data'),
 )
 app.use(cors())
+app.use(express.static('build'))
 
 let persons = [
   {
@@ -88,7 +89,7 @@ app.post('/api/person', (request, response) => {
     response.json(person)
   }
 })
-app.get('/', function (req, res) {
+app.get('/readme.md', function (req, res) {
   var path = __dirname + '/README.MD'
   var file = fs.readFileSync(path, 'utf8')
   res.send(marked(file.toString()))
