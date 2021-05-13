@@ -49,8 +49,8 @@ app.put('/api/persons/:id', wrap(async (request, response) => {
   } else if (!person.number) {
     throw new Error('number cannot be empty.')
   } else {
-      const newPerson = await api.update(id, person)
-      response.json(newPerson)
+    const newPerson = await api.update(id, person)
+    response.json(newPerson)
   }
 }))
 
@@ -61,13 +61,8 @@ app.post('/api/persons', wrap(async (request, response) => {
   } else if (!person.number) {
     throw new Error('number cannot be empty.')
   } else {
-    const persons = await api.fetchAll()
-    if (persons.find(_ => _.name.toLowerCase() === person.name.trim().toLowerCase())) {
-      throw new Error('name must be unique.')
-    } else {
-      const newPerson = await api.addPerson(person)
-      response.json(newPerson)
-    }
+    const newPerson = await api.addPerson(person)
+    response.json(newPerson)
   }
 }))
 
