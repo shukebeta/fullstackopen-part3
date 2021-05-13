@@ -22,7 +22,7 @@ const api = {
   },
 
   async update(id, person) {
-    return await Person.findByIdAndUpdate(id, person, {runValidators: true, context: 'query'})
+    return await Person.findByIdAndUpdate(id, person, { runValidators: true, context: 'query' })
   },
 }
 

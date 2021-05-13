@@ -24,7 +24,7 @@ const Person = mongoose.model('Person', personSchema)
 // add new person
 if (process.argv[3]) {
   const name = process.argv[3].trim()
-  const number = process.argv[4] && process.argv[4].trim() || ""
+  const number = process.argv[4] && process.argv[4].trim() || ''
   if (!number) {
     console.log('If you want to add a person, please run: node mongo.js <password> <name> <number>')
     process.exit(1)
@@ -35,7 +35,7 @@ if (process.argv[3]) {
     number,
   })
 
-  person.save().then(_ => {
+  person.save().then(() => {
     console.log(`added ${name} number ${number} to phonebook`)
     mongoose.connection.close()
   })
