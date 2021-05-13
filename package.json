@@ -4,7 +4,7 @@
   "description": "part 3 for fullstackopen",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "./node_modules/.bin/nodemon index.js",
     "dev": "node_modules/.bin/nodemon index.js",
     "build:ui": "rm -rf build && cd ~/Projects/fullstackopen/part2/phonebook && npm run build --prod && cp -r build ~/Projects/fullstackopen-part3",
     "deploy": "git push heroku master",
@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "marked": "^2.0.3",
     "mongoose": "^5.12.8",

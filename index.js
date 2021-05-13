@@ -1,9 +1,11 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
 const fs = require('fs')
 const marked = require('marked')
+const api = require('./models/personApi')
 
 morgan.token('post-data', (req) => req.method === 'POST' ? JSON.stringify(req.body) : '')
 
@@ -14,39 +16,18 @@ app.use(
 app.use(cors())
 app.use(express.static('build'))
 
-let persons = [
-  {
-    "id": 1,
-    "name": "Arto Hellas",
-    "number": "040-123456",
-  },
-  {
-    "id": 2,
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523",
-  },
-  {
-    "id": 3,
-    "name": "Dan Abramov",
-    "number": "12-43-234345",
-  },
-  {
-    "id": 4,
-    "name": "Mary Poppendieck",
-    "number": "39-23-6423122",
-  },
-]
-
 app.get('/info', (request, response) => {
   response.send(`<p>Phonebook has info for ${persons.length} people </p> ${new Date()}`)
 })
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', async (request, response) => {
+  const persons = await api.fetchAll()
   response.json(persons)
 })
 
-app.get('/api/persons/:id', (request, response) => {
-  const id = +request.params.id
+app.get('/api/persons/:id', async(request, response) => {
+  const id = request.params.id.trim()
+  const persons = await api.fetchAll()
   const person = persons.find(_ => _.id === id)
   if (person) {
     response.json(person)
@@ -55,7 +36,7 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 app.delete('/api/persons/:id', (request, response) => {
-  const id = +request.params.id
+  const id = request.params.id.trim()
   const person = persons.find(_ => _.id === id)
   if (person) {
     persons = persons.filter(_ => _.id !== id)
@@ -63,8 +44,9 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', async (request, response) => {
   const person = {...request.body}
+  const persons = await api.fetchAll()
   if (!person) {
     response.status(400).json({
       error: 'no person data received.',
@@ -82,13 +64,11 @@ app.post('/api/persons', (request, response) => {
       error: 'name must be unique.',
     })
   } else {
-    const min = 1000
-    const max = Number.MAX_SAFE_INTEGER
-    person.id = Math.floor(Math.random() * (max - min + 1)) + min
-    persons.push(person)
-    response.json(person)
+    const newPerson = await api.addPerson(person)
+    response.json(newPerson)
   }
 })
+
 app.get('/readme.md', function (req, res) {
   var path = __dirname + '/README.MD'
   var file = fs.readFileSync(path, 'utf8')

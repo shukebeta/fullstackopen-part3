@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   cors: ^2.8.5
+  dotenv: ^9.0.2
   express: ^4.17.1
   marked: ^2.0.3
   mongoose: ^5.12.8
@@ -10,6 +11,7 @@ specifiers:
 
 dependencies:
   cors: 2.8.5
+  dotenv: 9.0.2
   express: 4.17.1
   marked: 2.0.3
   mongoose: 5.12.8
@@ -356,6 +358,11 @@ packages:
     dependencies:
       is-obj: 2.0.0
     dev: true
+
+  /dotenv/9.0.2:
+    resolution: {integrity: sha512-I9OvvrHp4pIARv4+x9iuewrWycX6CcZtoAu1XrzPxc5UygMJXJZYmBsynku8IkrJwgypE5DGNjDPmPRhDCptUg==}
+    engines: {node: '>=10'}
+    dev: false
 
   /duplexer3/0.1.4:
     resolution: {integrity: sha1-7gHdHKwO08vH/b6jfcCo8c4ALOI=}
