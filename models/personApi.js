@@ -1,12 +1,29 @@
 const Person = require('./person')
 
-fetchAll = async () => {
-  return await Person.find({})
+const api = {
+  Person,
+  async fetchAll() {
+    return await Person.find({})
+  },
+
+  async addPerson(person) {
+    const newPerson = new Person(person)
+    return await newPerson.save()
+  },
+
+  async findById(id) {
+    return await Person.findById(id)
+  },
+
+  async delById(_id) {
+    return await Person.deleteOne({
+      _id,
+    })
+  },
+
+  async update(id, person) {
+    return await Person.findByIdAndUpdate(id, person)
+  },
 }
 
-addPerson = async (person) => {
-  const newPerson = new Person(person)
-  return await newPerson.save()
-}
-
-module.exports = {fetchAll, addPerson}
+module.exports = api

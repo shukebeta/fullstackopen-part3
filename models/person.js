@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
+mongoose.set('returnOriginal', false);
 
 const url = process.env.MONGO_CONNECTION_STRING
 
 console.log('connecting to', url)
-
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(result => {
     console.log('connected to MongoDB')
